@@ -2,7 +2,7 @@ path = require 'path'
 mocha = require 'mocha'
 chai = require 'chai'
 {expect} = chai
-stringPos = require('../')
+stringPos = require('../lib/index.coffee')
 
 
 suite "string-pos", ()->
@@ -47,3 +47,9 @@ suite "string-pos", ()->
 		expect(stringPos.toIndex @string, {line:6, column:21}).to.equal @string.length-1
 		expect(stringPos.toIndex @string, {line:0, column:21}).to.equal 0
 		expect(stringPos.toIndex @string, {line:-5, column:21}).to.equal 0
+		expect(stringPos.toIndex @string, {line:4, column:2}).to.equal 11
+		expect(stringPos.toIndex @string, {line:4, column:-2}).to.equal 11
+
+	test "cache", ()->
+		expect(stringPos("\n\nabc\n123\ndef\n456", 8)).not.to.equal(stringPos("\n\nabc\n123\ndef\n456", 8))
+		expect(stringPos("\n\nabc\n123\ndef\n456", 8)).to.eql(stringPos("\n\nabc\n123\ndef\n456", 8))

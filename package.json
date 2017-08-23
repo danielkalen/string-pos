@@ -10,9 +10,9 @@
     "build": "cake build:lib",
     "test": "cake build:lib; cake install:test; mocha $npm_package_mocha_opts",
     "test:debug": "cake build:lib; cake install:test; mocha $npm_package_mocha_opts --inspect-brk",
-    "coverage": "cake build:lib; cake build:benchmarks; npm run coverage:run && npm run coverage:badge",
-    "coverage:run": "mocha $npm_package_mocha_opts --require coffee-coverage/register-istanbul && istanbul report",
-    "coverage:badge": "badge-gen -d .config/badges/coverage",
+    "coverage": "cake build:lib; cake install:coverage; cake install:test; npm run coverage:run && npm run coverage:badge",
+    "coverage:run": "COFFEECOV_INIT_ALL=false mocha $npm_package_mocha_opts --require coffee-coverage/register-istanbul test/ && ./node_modules/istanbul/lib/cli.js report text-summary lcov",
+    "coverage:badge": "./node_modules/badge-gen/bin -d .config/badges/coverage",
     "benchmark": "npm run bench -s",
     "bench": "cake build && node benchmarks/runner.js",
     "bench:debug": "cake build && node --inspect --inspect-brk benchmarks/runner.js"
