@@ -5,6 +5,7 @@
 [![NPM](https://img.shields.io/npm/v/string-pos.svg)](https://npmjs.com/package/string-pos)
 [![NPM](https://img.shields.io/npm/dm/string-pos.svg)](https://npmjs.com/package/string-pos)
 
+
 ## Usage
 ```javascript
 var stringPos = require('coffee-register');
