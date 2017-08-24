@@ -11,8 +11,6 @@ modules =
 	coverage: ['badge-gen','coffee-coverage','istanbul','coffee-register']
 	test: ['mocha','chai','coffee-register']
 
-process.exit(0) if process.env.CI
-
 
 task 'build', 'compile lib, test, and benchmark files', ()->
 	Promise.resolve()
