@@ -1,4 +1,4 @@
-var Benchmark, Promise, benchmarks, chalk, findLineColumn, i, lineColumn, linesAndColumns, shuffle, stringPos, suite, target, text;
+var Benchmark, Promise, benchmarks, chalk, findLineColumn, i, lineColumn, lineColumnLong, lineColumnMedium, lineColumnShort, linesAndColumns, linesAndColumnsLong, linesAndColumnsMedium, linesAndColumnsShort, shuffle, stringPos, suite, target, text;
 
 Promise = require('bluebird');
 
@@ -48,6 +48,24 @@ lineColumn = require('line-column');
 
 linesAndColumns = require('lines-and-columns')["default"];
 
+stringPos(text.short, 0);
+
+stringPos(text.medium, 0);
+
+stringPos(text.long, 0);
+
+lineColumnShort = lineColumn(text.short);
+
+lineColumnMedium = lineColumn(text.medium);
+
+lineColumnLong = lineColumn(text.long);
+
+linesAndColumnsShort = new linesAndColumns(text.short);
+
+linesAndColumnsMedium = new linesAndColumns(text.medium);
+
+linesAndColumnsLong = new linesAndColumns(text.long);
+
 suite = function(name, options) {
   return Benchmark.Suite(name, options).on('start', function() {
     return console.log(chalk.dim(name));
@@ -61,9 +79,9 @@ suite = function(name, options) {
 suite('short text').add('find-line-column', function() {
   return findLineColumn(text.short, target.short);
 }).add('lines-and-columns', function() {
-  return (new linesAndColumns(text.short)).locationForIndex(target.short);
+  return linesAndColumnsShort.locationForIndex(target.short);
 }).add('line-column', function() {
-  return lineColumn(text.short).fromIndex(target.short);
+  return lineColumnShort.fromIndex(target.short);
 }).add('string-pos', function() {
   return stringPos(text.short, target.short);
 }).run();
@@ -71,9 +89,9 @@ suite('short text').add('find-line-column', function() {
 suite('medium text').add('find-line-column', function() {
   return findLineColumn(text.medium, target.medium);
 }).add('lines-and-columns', function() {
-  return (new linesAndColumns(text.medium)).locationForIndex(target.medium);
+  return linesAndColumnsMedium.locationForIndex(target.medium);
 }).add('line-column', function() {
-  return lineColumn(text.medium).fromIndex(target.medium);
+  return lineColumnMedium.fromIndex(target.medium);
 }).add('string-pos', function() {
   return stringPos(text.medium, target.medium);
 }).run();
@@ -81,9 +99,9 @@ suite('medium text').add('find-line-column', function() {
 suite('long text').add('find-line-column', function() {
   return findLineColumn(text.long, target.long);
 }).add('lines-and-columns', function() {
-  return (new linesAndColumns(text.long)).locationForIndex(target.long);
+  return linesAndColumnsLong.locationForIndex(target.long);
 }).add('line-column', function() {
-  return lineColumn(text.long).fromIndex(target.long);
+  return lineColumnLong.fromIndex(target.long);
 }).add('string-pos', function() {
   return stringPos(text.long, target.long);
 }).run();

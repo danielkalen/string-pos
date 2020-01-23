@@ -20,6 +20,17 @@ findLineColumn = require 'find-line-column'
 lineColumn = require 'line-column'
 linesAndColumns = require('lines-and-columns').default
 
+# for fair comparison load indexes and warm caches
+stringPos(text.short, 0)
+stringPos(text.medium, 0)
+stringPos(text.long, 0)
+lineColumnShort = lineColumn(text.short)
+lineColumnMedium = lineColumn(text.medium)
+lineColumnLong = lineColumn(text.long)
+linesAndColumnsShort = (new linesAndColumns text.short)
+linesAndColumnsMedium = (new linesAndColumns text.medium)
+linesAndColumnsLong = (new linesAndColumns text.long)
+
 suite = (name, options)->
 	Benchmark.Suite(name, options)
 		.on 'start', ()-> console.log chalk.dim name
@@ -31,10 +42,10 @@ suite('short text')
 		findLineColumn(text.short, target.short)
 	
 	.add 'lines-and-columns', ()->
-		(new linesAndColumns text.short).locationForIndex(target.short)
+		linesAndColumnsShort.locationForIndex(target.short)
 	
 	.add 'line-column', ()->
-		lineColumn(text.short).fromIndex(target.short)
+		lineColumnShort.fromIndex(target.short)
 
 	.add 'string-pos', ()->
 		stringPos(text.short, target.short)
@@ -47,10 +58,10 @@ suite('medium text')
 		findLineColumn(text.medium, target.medium)
 	
 	.add 'lines-and-columns', ()->
-		(new linesAndColumns text.medium).locationForIndex(target.medium)
+		linesAndColumnsMedium.locationForIndex(target.medium)
 	
 	.add 'line-column', ()->
-		lineColumn(text.medium).fromIndex(target.medium)
+		lineColumnMedium.fromIndex(target.medium)
 
 	.add 'string-pos', ()->
 		stringPos(text.medium, target.medium)
@@ -63,10 +74,10 @@ suite('long text')
 		findLineColumn(text.long, target.long)
 	
 	.add 'lines-and-columns', ()->
-		(new linesAndColumns text.long).locationForIndex(target.long)
+		linesAndColumnsLong.locationForIndex(target.long)
 	
 	.add 'line-column', ()->
-		lineColumn(text.long).fromIndex(target.long)
+		lineColumnLong.fromIndex(target.long)
 
 	.add 'string-pos', ()->
 		stringPos(text.long, target.long)
